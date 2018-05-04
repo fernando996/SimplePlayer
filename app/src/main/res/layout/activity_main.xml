@@ -17,6 +17,7 @@
             android:id="@+id/buttonPlay"
             android:layout_width="91dp"
             android:layout_height="50dp"
+            android:onClick="onClickButton"
             android:text="Play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +30,7 @@
             android:id="@+id/buttonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClickButton"
             android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +43,7 @@
             android:id="@+id/buttonFoward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClickButton"
             android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,28 +52,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.84" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="377dp"
-            android:layout_height="234dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.571"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.057"
-            app:srcCompat="@color/colorPrimary" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="308dp"
-            android:layout_height="42dp"
+            android:layout_height="43dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.624" />
+            app:layout_constraintVertical_bias="0.566" />
 
         <TextView
             android:id="@+id/textView2"
@@ -79,10 +70,30 @@
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintHorizontal_bias="0.107"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.725" />
+            app:layout_constraintVertical_bias="0.697" />
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="198dp"
+            android:layout_height="212dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.127" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="URL"
+            tools:layout_editor_absoluteX="126dp"
+            tools:layout_editor_absoluteY="325dp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
