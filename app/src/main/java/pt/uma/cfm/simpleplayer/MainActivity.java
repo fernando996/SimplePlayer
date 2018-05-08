@@ -1,6 +1,7 @@
 package pt.uma.cfm.simpleplayer;
 
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button _bPlay, _bBack, bFowa;
+    private FloatingActionButton _bPlay, _bBack, bFowa;
     private VideoView _video;
     private EditText _URL;
     private String _SURL;
@@ -73,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
             _maxTime = _video.getDuration();
             Log.d("Duração",_maxTime+"");
             _timeBar.setMax(_video.getDuration());
-            _bPlay.setText("Pause");
+            //_bPlay.setText("Pause");
             _isPaused = false;
 
         }
         else{
             _video.pause();
-            _bPlay.setText("Play");
+            //_bPlay.setText("Play");
             _isPaused = true;
             _timer.cancel();
 
