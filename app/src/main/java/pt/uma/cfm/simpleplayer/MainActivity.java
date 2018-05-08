@@ -1,6 +1,7 @@
 package pt.uma.cfm.simpleplayer;
 
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +13,7 @@ import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button _bPlay, _bBack, bFowa;
+    private FloatingActionButton _bPlay, _bBack, bFowa;
     private VideoView _video;
     private EditText _URL;
     private String _SURL;
@@ -50,12 +51,12 @@ public class MainActivity extends AppCompatActivity {
         _timeBar.setProgress(_video.getCurrentPosition());
         if(isPaused) {
             _video.start();
-            _bPlay.setText("Pause");
+            //_bPlay.setText("Pause");
             isPaused = false;
         }
         else{
             _video.pause();
-            _bPlay.setText("Play");
+            //_bPlay.setText("Play");
             isPaused = true;
         }
 
