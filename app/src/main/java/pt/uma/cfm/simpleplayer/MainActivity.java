@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button _bPlay, _bBack, bFowa;
@@ -17,12 +20,25 @@ public class MainActivity extends AppCompatActivity {
     private EditText _URL;
     private String _SURL;
     private ProgressBar _timeBar;
-    private boolean isPaused = true;
+    private boolean _isPaused = true;
+    private int _maxTime = 0;
+    private Timer _timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //_timer = new Timer();
+        /*_timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimerMethod();
+            }
+
+        }, 0, 1000);*/
+
+
 
         setConstants();
     }
@@ -33,9 +49,11 @@ public class MainActivity extends AppCompatActivity {
         _timeBar =  findViewById(R.id.timeBar);
 
         _video.setVideoPath("https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4");
-        Log.d("Duração",_video.getDuration()+"");
+        //int time = _video.getDuration();
+        //Log.d("Duração",time +"");
         _timeBar.setMax(_video.getDuration());
-        //_video.setVideoPath("https://youtu.be/IdoD2147Fik.mp4");
+
+
     }
 
     public void onClickButton(View v){
@@ -44,20 +62,73 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = Uri.parse("https://youtu.be/IdoD2147Fik");
         //_video.setVideoURI(uri);
         //_video.setVideoPath("https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4");
-        //_video.setVideoPath("https://cdn14.tubeload.tv/mp3/Wake_Me_Up_Jake_Donaldson_Avicii_Tribute_.mp3");
-        //_video.setVideoPath("https://youtu.be/IdoD2147Fik");
+
+
 
         _timeBar.setProgress(_video.getCurrentPosition());
-        if(isPaused) {
+
+        if(_isPaused) {
+            DefineTimer();
             _video.start();
+            _maxTime = _video.getDuration();
+            Log.d("Duração",_maxTime+"");
+            _timeBar.setMax(_video.getDuration());
             _bPlay.setText("Pause");
-            isPaused = false;
+            _isPaused = false;
+
         }
         else{
             _video.pause();
             _bPlay.setText("Play");
-            isPaused = true;
+            _isPaused = true;
+            _timer.cancel();
+
         }
 
     }
+
+    /**
+     * Esta função define um temporizador sempre igual para que se possa utuilizar na
+     * barra de progresso.
+     * Através desta função é possivel iniciar o temporizador logo apos termos cancelado o
+     * mesmo.
+     */
+    private void DefineTimer()
+    {
+        _timer = new Timer();
+        _timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimerMethod();
+            }
+
+        }, 0, 500);
+    }
+
+
+
+    private void TimerMethod()
+    {
+        //This method is called directly by the timer
+        //and runs in the same thread as the timer.
+        //_timeBar.setProgress(_video.getCurrentPosition());
+
+        //We call the method that will work with the UI
+        //through the runOnUiThread method.
+        this.runOnUiThread(Timer_Tick);
+    }
+
+
+    private Runnable Timer_Tick = new Runnable() {
+        public void run() {
+
+            _timeBar.setProgress(_video.getCurrentPosition());
+            Log.d("Posição Atual",_video.getCurrentPosition()+"");
+            //This method runs in the same thread as the UI.
+
+            //Do something to the UI thread here
+
+        }
+    };
+
 }
