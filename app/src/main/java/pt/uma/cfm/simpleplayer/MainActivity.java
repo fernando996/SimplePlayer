@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.util.Timer;
@@ -20,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
     private VideoView _video;
     private EditText _URL;
     private String _SURL;
-    private ProgressBar _timeBar;
+    private SeekBar _timeBar;
     private boolean _isPaused = true;
     private int _maxTime = 0;
     private Timer _timer;
+    private TextView _title;
+    private String defaultURL = "https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +44,43 @@ public class MainActivity extends AppCompatActivity {
         }, 0, 1000);*/
 
 
+        //setBarListener(_video,_timeBar);
+        //_title = findViewById(R.id.eventName);
+        //_title.setText(_video.getLabelFor()+"");
 
         setConstants();
+        _timeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // TODO Auto-generated method stub
+
+                if(fromUser) {
+                    _video.seekTo(progress);
+                }
+
+            }
+        });
     }
 
     public void setConstants(){
         _bPlay = findViewById(R.id.buttonPlay);
         _video =  findViewById(R.id.videoView);
         _timeBar =  findViewById(R.id.timeBar);
+        _URL = findViewById(R.id.editText);
+        _URL.setText(defaultURL);
 
-        _video.setVideoPath("https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4");
+        _video.setVideoPath(defaultURL);
         //int time = _video.getDuration();
         //Log.d("Duração",time +"");
         _timeBar.setMax(_video.getDuration());
@@ -60,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButton(View v){
         Log.d("Teste","Funcionou");
         //Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.test);
-        Uri uri = Uri.parse("https://youtu.be/IdoD2147Fik");
+        //Uri uri = Uri.parse("https://youtu.be/IdoD2147Fik");
         //_video.setVideoURI(uri);
         //_video.setVideoPath("https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4");
 
-
+        //_video.setVideoPath(_URL.getText().toString());
 
         _timeBar.setProgress(_video.getCurrentPosition());
 
@@ -74,13 +105,14 @@ public class MainActivity extends AppCompatActivity {
             _maxTime = _video.getDuration();
             Log.d("Duração",_maxTime+"");
             _timeBar.setMax(_video.getDuration());
-            //_bPlay.setText("Pause");
+            _bPlay.setImageResource(android.R.drawable.ic_media_pause);
             _isPaused = false;
 
         }
+
         else{
             _video.pause();
-            //_bPlay.setText("Play");
+            _bPlay.setImageResource(android.R.drawable.ic_media_play);
             _isPaused = true;
             _timer.cancel();
 
@@ -131,5 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
 
 }
