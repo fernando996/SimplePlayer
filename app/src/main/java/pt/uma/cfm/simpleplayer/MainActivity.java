@@ -78,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
                     _video.seekTo(progress);
 
+                    Log.d("Progresso",progress+"");
+                    Log.d("Buffer Atual",_video.getBufferPercentage()+"");
+                    Log.d("Max",_video.getDuration()+"");
+
+
 
                 }
 
@@ -93,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         _URL.setText(defaultURL);
 
         _video.setVideoPath(defaultURL);
+        _video.requestFocus();
         //int time = _video.getDuration();
         //Log.d("Duração",time +"");
         _timeBar.setMax(_video.getDuration());
