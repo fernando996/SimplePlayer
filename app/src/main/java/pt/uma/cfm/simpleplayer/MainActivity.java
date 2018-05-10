@@ -32,21 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        //_timer = new Timer();
-        /*_timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                TimerMethod();
-            }
-
-        }, 0, 1000);*/
-
-
-        //setBarListener(_video,_timeBar);
-        //_title = findViewById(R.id.eventName);
-        //_title.setText(_video.getLabelFor()+"");
 
         setConstants();
         setBarListener(_timeBar);
@@ -90,12 +75,11 @@ public class MainActivity extends AppCompatActivity {
         _video =  findViewById(R.id.videoView);
         _timeBar =  findViewById(R.id.timeBar);
         _URL = findViewById(R.id.editText);
+        _title = findViewById(R.id.eventName);
 
         _URL.setText(defaultURL);
-
         _video.setVideoPath(defaultURL);
         _timeBar.setMax(_video.getDuration());
-
 
     }
 
