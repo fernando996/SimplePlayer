@@ -12,12 +12,14 @@ import android.widget.VideoView;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton _bPlay;
     private VideoView _video;
     private EditText _URL;
+    private int _SURL;
     private SeekBar _timeBar;
     private int _maxTime = 0;
     private Timer _timer;
@@ -157,12 +159,30 @@ public class MainActivity extends AppCompatActivity {
         this.runOnUiThread(Timer_Tick);
     }
 
-    private Runnable Timer_Tick = new Runnable(){
+    private String progressBarVideoDuration(int _videoProgress, int _videoDuration){
+
+        String aVideoProgress = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(_videoProgress),
+                TimeUnit.MILLISECONDS.toSeconds(_videoProgress) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(_videoProgress))
+        );
+
+        String aVideoDuration = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(_videoDuration),
+                TimeUnit.MILLISECONDS.toSeconds(_videoDuration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(_videoDuration))
+        );
+
+        return aVideoProgress + " / " + aVideoDuration;
+    }
+
+
+    private Runnable Timer_Tick = new Runnable() {
         public void run() {
             _timeBar.setProgress(_video.getCurrentPosition());
             Log.d("Posição Atual",_video.getCurrentPosition()+"");
+            _title.setText(progressBarVideoDuration(_video.getCurrentPosition(),_video.getDuration()));
             //This method runs in the same thread as the UI.
-
             //Do something to the UI thread here
 
         }
