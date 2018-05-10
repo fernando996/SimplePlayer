@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
 
                 if(fromUser) {
+
                     _video.seekTo(progress);
+
+
                 }
 
             }
