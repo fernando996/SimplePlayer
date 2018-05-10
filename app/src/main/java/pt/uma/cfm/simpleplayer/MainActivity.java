@@ -22,13 +22,14 @@ import android.widget.VideoView;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton _bPlay, _bBack, bFowa;
     private VideoView _video;
     private EditText _URL;
-    private String _SURL;
+    private int _SURL;
     private SeekBar _timeBar;
     //private boolean _isPaused = true;
     private int _maxTime = 0;
@@ -37,10 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private String defaultURL = "https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4";
     //private String defaultURL = "https://r6---sn-pouxjivoapox-cvhl.googlevideo.com/videoplayback?ms=au%2Crdu&fvip=6&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&mt=1525961085&mv=m&mime=video%2Fmp4&id=o-ADLGjRZK4KSHfAl4eTLpu-iMCtb2aIWE64eD6hqx0FRq&pl=24&gir=yes&key=yt6&ip=103.42.162.50&mn=sn-pouxjivoapox-cvhl%2Csn-cvh7knez&ipbits=0&mm=31%2C29&c=WEB&ratebypass=yes&lmt=1457644399034408&source=youtube&initcwndbps=688750&dur=58.374&clen=2624875&expire=1525982797&ei=7VH0WpnpLeWVz7sP_ISxgAM&itag=18&signature=641851770CA988F2164873F0253D98AAF45E6A0C.4CBD38B6C88ED879E0BDA0A03E3346A755AA5AC4&requiressl=yes&video_id=xqOFl93sHno&title=Batman+lesson+-+dont+give+the+Joker+a+glass+of+water";
     //private String defaultURL = "http://srv4.youtubemp3.to/download.php?output=MjM4MDU2NTcvMTUyNTk2MzM0NQ==";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        _title = findViewById(R.id.eventName);
         //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //_timer = new Timer();
@@ -185,14 +188,31 @@ public class MainActivity extends AppCompatActivity {
         this.runOnUiThread(Timer_Tick);
     }
 
+    private String progressBarVideoDuration(int _videoProgress, int _videoDuration){
+
+        String aVideoProgress = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(_videoProgress),
+                TimeUnit.MILLISECONDS.toSeconds(_videoProgress) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(_videoProgress))
+        );
+
+        String aVideoDuration = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(_videoDuration),
+                TimeUnit.MILLISECONDS.toSeconds(_videoDuration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(_videoDuration))
+        );
+
+        return aVideoProgress + " / " + aVideoDuration;
+    }
+
 
     private Runnable Timer_Tick = new Runnable() {
         public void run() {
 
             _timeBar.setProgress(_video.getCurrentPosition());
             Log.d("Posição Atual",_video.getCurrentPosition()+"");
+            _title.setText(progressBarVideoDuration(_video.getCurrentPosition(),_video.getDuration()));
             //This method runs in the same thread as the UI.
-
             //Do something to the UI thread here
 
         }
