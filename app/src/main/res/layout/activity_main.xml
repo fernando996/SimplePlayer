@@ -22,24 +22,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/eventName"
-            android:layout_width="396dp"
-            android:layout_height="wrap_content"
-            android:text="Video Title Goes Here!"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp" />
-
         <VideoView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="24dp"
-            android:clickable="true"
+            android:clickable="false"
             android:onClick="onClickButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="URL"
+            android:hint="@string/url"
             android:inputType="textPersonName"
             android:textColorLink="@color/colorPrimary"
             tools:layout_editor_absoluteX="8dp"
@@ -72,14 +61,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="changeVideo"
-            android:text="Set Video"
+            android:text="@string/set_video"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="362dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/buttonPlay"
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -95,7 +84,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             app:layout_constraintVertical_bias="0.418"
-            app:srcCompat="@android:drawable/ic_media_play" />
+            app:srcCompat="@android:drawable/ic_media_play"
+            android:focusable="true" />
 
     </LinearLayout>
 
