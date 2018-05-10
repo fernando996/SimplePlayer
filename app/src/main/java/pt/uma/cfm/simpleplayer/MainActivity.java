@@ -134,9 +134,10 @@ public class MainActivity extends AppCompatActivity {
         _timeBar.setProgress(_video.getCurrentPosition());
 
         if(!_video.isPlaying()) {
-            DefineTimer();
+
             _video.start();
-            _maxTime = _video.getDuration();
+
+            DefineTimer();
             Log.d("Duração",_maxTime+"");
             _timeBar.setMax(_video.getDuration());
             _bPlay.setImageResource(android.R.drawable.ic_media_pause);
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 TimerMethod();
             }
 
-        }, 0, 500);
+        }, 0, 100);
     }
 
 
@@ -182,13 +183,15 @@ public class MainActivity extends AppCompatActivity {
 
         //We call the method that will work with the UI
         //through the runOnUiThread method.
+        _maxTime = _video.getDuration();
+        _timeBar.setMax(_video.getDuration());
+
         this.runOnUiThread(Timer_Tick);
     }
 
 
     private Runnable Timer_Tick = new Runnable() {
         public void run() {
-
             _timeBar.setProgress(_video.getCurrentPosition());
             Log.d("Posição Atual",_video.getCurrentPosition()+"");
             //This method runs in the same thread as the UI.
