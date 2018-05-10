@@ -6,40 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/eventName"
-            android:layout_width="match_parent"
+            android:layout_width="396dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="Video Title Goes Here!"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/videoView"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:onClick="onClickButton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.058" />
+
+        <SeekBar
+            android:id="@+id/timeBar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:progress="0"
+            android:progressTint="@color/colorPrimary"
+            android:thumbTint="@color/colorPrimary" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="URL"
+            android:inputType="textPersonName"
+            android:textColorLink="@color/colorPrimary"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="269dp" />
+
+        <Button
+            android:id="@+id/setVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="changeVideo"
+            android:text="Set Video"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="362dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/buttonPlay"
-            android:layout_width="84dp"
-            android:layout_height="88dp"
-            android:layout_marginBottom="32dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -47,77 +88,15 @@
             android:clickable="true"
             android:onClick="onClickButton"
             app:backgroundTint="@color/colorPrimary"
+            app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.418"
             app:srcCompat="@android:drawable/ic_media_play" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="101dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/videoView"
-            app:layout_constraintVertical_bias="0.13">
+    </LinearLayout>
 
-            <SeekBar
-                android:id="@+id/timeBar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:progress="0"
-                android:progressTint="@color/colorPrimary"
-                android:thumbTint="@color/colorPrimary" />
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="URL"
-                android:inputType="textPersonName"
-                android:textColorLink="@color/colorPrimary"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="269dp" />
-
-        </LinearLayout>
-
-        <VideoView
-            android:id="@+id/videoView"
-            android:layout_width="0dp"
-            android:layout_height="186dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="32dp"
-            android:clickable="true"
-            android:onClick="onClickButton"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="427dp" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="253dp" />
-
-    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
