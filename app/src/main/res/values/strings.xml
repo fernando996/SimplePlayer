@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Simple Player</string>
+    <string name="url">URL</string>
+    <string name="set_video">Set Video</string>
 </resources>

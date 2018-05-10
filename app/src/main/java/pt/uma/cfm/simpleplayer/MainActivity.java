@@ -1,21 +1,11 @@
 package pt.uma.cfm.simpleplayer;
 
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.net.Uri;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Surface;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -26,12 +16,11 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton _bPlay, _bBack, bFowa;
+    private FloatingActionButton _bPlay;
     private VideoView _video;
     private EditText _URL;
     private int _SURL;
     private SeekBar _timeBar;
-    //private boolean _isPaused = true;
     private int _maxTime = 0;
     private Timer _timer;
     private TextView _title;
@@ -43,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        _title = findViewById(R.id.eventName);
         //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //_timer = new Timer();
@@ -61,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
         //_title.setText(_video.getLabelFor()+"");
 
         setConstants();
-        _timeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        setBarListener(_timeBar);
+    }
+
+    public void setBarListener(SeekBar bar){
+        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -78,7 +70,15 @@ public class MainActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
 
                 if(fromUser) {
+
                     _video.seekTo(progress);
+
+                    Log.d("Progresso",progress+"");
+                    Log.d("Buffer Atual",_video.getBufferPercentage()+"");
+                    Log.d("Max",_video.getDuration()+"");
+
+
+
                 }
 
             }
@@ -90,11 +90,10 @@ public class MainActivity extends AppCompatActivity {
         _video =  findViewById(R.id.videoView);
         _timeBar =  findViewById(R.id.timeBar);
         _URL = findViewById(R.id.editText);
+
         _URL.setText(defaultURL);
 
         _video.setVideoPath(defaultURL);
-        //int time = _video.getDuration();
-        //Log.d("Duração",time +"");
         _timeBar.setMax(_video.getDuration());
 
 
@@ -105,52 +104,25 @@ public class MainActivity extends AppCompatActivity {
         _video.start();
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        //Do stuff here
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        final int rotation = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
-        switch (rotation) {
-//            case Surface.ROTATION_0:
-//                return "portrait";
-            case Surface.ROTATION_90:
-
-                _video.setLayoutParams(lp);
-                break;
-            case Surface.ROTATION_270:
-                //WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-                _video.setLayoutParams(lp);
-                break;
-        }
-    }
-
     public void onClickButton(View v){
         Log.d("Teste","Funcionou");
-        //Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.test);
-        //Uri uri = Uri.parse("https://youtu.be/IdoD2147Fik");
-        //_video.setVideoURI(uri);
-        //_video.setVideoPath("https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4");
-
-        //_video.setVideoPath(_URL.getText().toString());
 
         _timeBar.setProgress(_video.getCurrentPosition());
 
         if(!_video.isPlaying()) {
-            DefineTimer();
+
             _video.start();
-            _maxTime = _video.getDuration();
+
+            DefineTimer();
             Log.d("Duração",_maxTime+"");
             _timeBar.setMax(_video.getDuration());
             _bPlay.setImageResource(android.R.drawable.ic_media_pause);
-            //_isPaused = false;
 
         }
 
         else{
             _video.pause();
             _bPlay.setImageResource(android.R.drawable.ic_media_play);
-            //_isPaused = true;
             _timer.cancel();
 
         }
@@ -163,8 +135,7 @@ public class MainActivity extends AppCompatActivity {
      * Através desta função é possivel iniciar o temporizador logo apos termos cancelado o
      * mesmo.
      */
-    private void DefineTimer()
-    {
+    private void DefineTimer(){
         _timer = new Timer();
         _timer.schedule(new TimerTask() {
             @Override
@@ -172,19 +143,19 @@ public class MainActivity extends AppCompatActivity {
                 TimerMethod();
             }
 
-        }, 0, 500);
+        }, 0, 100);
     }
 
-
-
-    private void TimerMethod()
-    {
+    private void TimerMethod(){
         //This method is called directly by the timer
         //and runs in the same thread as the timer.
         //_timeBar.setProgress(_video.getCurrentPosition());
 
         //We call the method that will work with the UI
         //through the runOnUiThread method.
+        _maxTime = _video.getDuration();
+        _timeBar.setMax(_video.getDuration());
+
         this.runOnUiThread(Timer_Tick);
     }
 
@@ -208,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Runnable Timer_Tick = new Runnable() {
         public void run() {
-
             _timeBar.setProgress(_video.getCurrentPosition());
             Log.d("Posição Atual",_video.getCurrentPosition()+"");
             _title.setText(progressBarVideoDuration(_video.getCurrentPosition(),_video.getDuration()));
@@ -217,8 +187,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-
-
-
 
 }
