@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeVideo(View v){
         _video.setVideoPath(_URL.getText().toString());
+        _timeBar.setMax(_video.getDuration());
+        _bPlay.setImageResource(android.R.drawable.ic_media_pause);
+        DefineTimer();
         _video.start();
     }
 
