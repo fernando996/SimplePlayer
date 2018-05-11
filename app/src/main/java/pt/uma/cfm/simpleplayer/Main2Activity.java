@@ -1,38 +1,30 @@
 package pt.uma.cfm.simpleplayer;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.PowerManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
-import android.view.Surface;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity{
+public class Main2Activity extends AppCompatActivity implements SensorEventListener {
 
     private FloatingActionButton _bPlay;
     private VideoView _video;
     private EditText _URL;
-    private int _SURL;
     private SeekBar _timeBar;
     private int _maxTime = 0;
     private Timer _timer;
@@ -41,22 +33,53 @@ public class MainActivity extends AppCompatActivity{
     //private String defaultURL = "https://r6---sn-pouxjivoapox-cvhl.googlevideo.com/videoplayback?ms=au%2Crdu&fvip=6&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&mt=1525961085&mv=m&mime=video%2Fmp4&id=o-ADLGjRZK4KSHfAl4eTLpu-iMCtb2aIWE64eD6hqx0FRq&pl=24&gir=yes&key=yt6&ip=103.42.162.50&mn=sn-pouxjivoapox-cvhl%2Csn-cvh7knez&ipbits=0&mm=31%2C29&c=WEB&ratebypass=yes&lmt=1457644399034408&source=youtube&initcwndbps=688750&dur=58.374&clen=2624875&expire=1525982797&ei=7VH0WpnpLeWVz7sP_ISxgAM&itag=18&signature=641851770CA988F2164873F0253D98AAF45E6A0C.4CBD38B6C88ED879E0BDA0A03E3346A755AA5AC4&requiressl=yes&video_id=xqOFl93sHno&title=Batman+lesson+-+dont+give+the+Joker+a+glass+of+water";
     //private String defaultURL = "http://srv4.youtubemp3.to/download.php?output=MjM4MDU2NTcvMTUyNTk2MzM0NQ==";
 
+    private SensorManager sensorManager;
+    Sensor accelerometer;
+    float xValue, yValue, zValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
+
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setConstants();
         setBarListener(_timeBar);
 
-        Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-        startActivity(intent);
-
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(Main2Activity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        xValue = sensorEvent.values[0];
+        yValue = sensorEvent.values[1];
+        zValue = sensorEvent.values[2];
+        Log.d("X", xValue + "");
+        Log.d("Y", yValue + "");
+        Log.d("Z", zValue + "");
+
+        if(yValue > 0 && xValue > 3 && zValue < 3 && zValue > -3){
+            Log.d("Action", "Rewind");
+        }
+        else if(yValue > 0 && xValue < -3 && zValue < 3 && zValue > -3){
+            Log.d("Action", "Advance");
+        }
+        else if(yValue > 0 && zValue < -3 && xValue < 3 && xValue > -3){
+            Log.d("Action", "Pause");
+        }
+        else if(yValue > 0 && zValue > 3 && xValue < 3 && xValue > -3){
+            Log.d("Action", "Play");
+        }
+    }
 
     public void setBarListener(SeekBar bar){
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -100,6 +123,7 @@ public class MainActivity extends AppCompatActivity{
         _URL.setText(defaultURL);
         _video.setVideoPath(defaultURL);
         _timeBar.setMax(_video.getDuration());
+        _video.start();
 
     }
 
@@ -194,5 +218,4 @@ public class MainActivity extends AppCompatActivity{
 
         }
     };
-
 }
