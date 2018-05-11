@@ -29,9 +29,9 @@ public class Main2Activity extends AppCompatActivity implements SensorEventListe
     private int _maxTime = 0;
     private Timer _timer;
     private TextView _title;
-    private String defaultURL = "https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4";
-    //private String defaultURL = "https://r6---sn-pouxjivoapox-cvhl.googlevideo.com/videoplayback?ms=au%2Crdu&fvip=6&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&mt=1525961085&mv=m&mime=video%2Fmp4&id=o-ADLGjRZK4KSHfAl4eTLpu-iMCtb2aIWE64eD6hqx0FRq&pl=24&gir=yes&key=yt6&ip=103.42.162.50&mn=sn-pouxjivoapox-cvhl%2Csn-cvh7knez&ipbits=0&mm=31%2C29&c=WEB&ratebypass=yes&lmt=1457644399034408&source=youtube&initcwndbps=688750&dur=58.374&clen=2624875&expire=1525982797&ei=7VH0WpnpLeWVz7sP_ISxgAM&itag=18&signature=641851770CA988F2164873F0253D98AAF45E6A0C.4CBD38B6C88ED879E0BDA0A03E3346A755AA5AC4&requiressl=yes&video_id=xqOFl93sHno&title=Batman+lesson+-+dont+give+the+Joker+a+glass+of+water";
-    //private String defaultURL = "http://srv4.youtubemp3.to/download.php?output=MjM4MDU2NTcvMTUyNTk2MzM0NQ==";
+
+    //private String defaultURL = "https://img-9gag-fun.9cache.com/photo/agXODGv_460svvp9.webm";
+    private String defaultURL = "https://img-9gag-fun.9cache.com/photo/aeMO8Zv_460svvp9.webm";
 
     private SensorManager sensorManager;
     Sensor accelerometer;
@@ -66,22 +66,32 @@ public class Main2Activity extends AppCompatActivity implements SensorEventListe
         Log.d("X", xValue + "");
         Log.d("Y", yValue + "");
         Log.d("Z", zValue + "");
+        //_video.pause();
 
         if(yValue > 0 && xValue > 3 && zValue < 3 && zValue > -3){
             Log.d("Action", "Rewind");
+            _video.pause();
+            _video.seekTo(_video.getCurrentPosition() - 2000);
+            //_video.start();
         }
         else if(yValue > 0 && xValue < -3 && zValue < 3 && zValue > -3){
             Log.d("Action", "Advance");
+            _video.pause();
+            _video.seekTo(_video.getCurrentPosition() + 2000);
+            //_video.start();
         }
-        else if(yValue > 0 && zValue < -3 && xValue < 3 && xValue > -3){
+        else if(yValue > 0 && zValue < -3 && xValue < 3 && xValue > -3 && _video.isPlaying()){
             Log.d("Action", "Pause");
+            _video.pause();
         }
-        else if(yValue > 0 && zValue > 3 && xValue < 3 && xValue > -3){
+        else if(yValue > 0 && zValue > 3 && xValue < 3 && xValue > -3 && !_video.isPlaying()){
             Log.d("Action", "Play");
+            _video.start();
         }
+        //_video.start();
     }
 
-    public void setBarListener(SeekBar bar){
+    private void setBarListener(SeekBar bar){
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -113,51 +123,27 @@ public class Main2Activity extends AppCompatActivity implements SensorEventListe
         });
     }
 
-    public void setConstants(){
-        _bPlay = findViewById(R.id.buttonPlay);
-        _video =  findViewById(R.id.videoView);
-        _timeBar =  findViewById(R.id.timeBar);
-        _URL = findViewById(R.id.editText);
-        _title = findViewById(R.id.eventName);
+    private void setConstants(){
+        //_bPlay = findViewById(R.id.buttonPlay);
+        _video =  findViewById(R.id.videoView2);
+        _timeBar =  findViewById(R.id.timeBar2);
+        _URL = findViewById(R.id.editText2);
+        _title = findViewById(R.id.eventName2);
 
         _URL.setText(defaultURL);
         _video.setVideoPath(defaultURL);
         _timeBar.setMax(_video.getDuration());
-        _video.start();
+        DefineTimer();
+        //_video.start();
 
     }
 
     public void changeVideo(View v){
         _video.setVideoPath(_URL.getText().toString());
         _timeBar.setMax(_video.getDuration());
-        _bPlay.setImageResource(android.R.drawable.ic_media_pause);
+        //_bPlay.setImageResource(android.R.drawable.ic_media_pause);
         DefineTimer();
         _video.start();
-    }
-
-    public void onClickButton(View v){
-        Log.d("Teste","Funcionou");
-
-        _timeBar.setProgress(_video.getCurrentPosition());
-
-        if(!_video.isPlaying()) {
-
-            _video.start();
-
-            DefineTimer();
-            Log.d("Duração",_maxTime+"");
-            _timeBar.setMax(_video.getDuration());
-            _bPlay.setImageResource(android.R.drawable.ic_media_pause);
-
-        }
-
-        else{
-            _video.pause();
-            _bPlay.setImageResource(android.R.drawable.ic_media_play);
-            _timer.cancel();
-
-        }
-
     }
 
     /**
@@ -210,6 +196,7 @@ public class Main2Activity extends AppCompatActivity implements SensorEventListe
 
     private Runnable Timer_Tick = new Runnable() {
         public void run() {
+
             _timeBar.setProgress(_video.getCurrentPosition());
             Log.d("Posição Atual",_video.getCurrentPosition()+"");
             _title.setText(progressBarVideoDuration(_video.getCurrentPosition(),_video.getDuration()));
