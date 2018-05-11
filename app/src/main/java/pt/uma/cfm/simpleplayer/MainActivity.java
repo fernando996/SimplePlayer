@@ -1,5 +1,6 @@
 package pt.uma.cfm.simpleplayer;
 
+import android.content.pm.ActivityInfo;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton _bPlay;
+    private FloatingActionButton _bPlay, _bBack, _bFor;
     private VideoView _video;
     private EditText _URL;
     private int _SURL;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setConstants();
         setBarListener(_timeBar);
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void setConstants(){
         _bPlay = findViewById(R.id.buttonPlay);
+        _bBack = findViewById(R.id.buttonBackward);
+        _bFor = findViewById(R.id.buttonForward);
         _video =  findViewById(R.id.videoView);
         _timeBar =  findViewById(R.id.timeBar);
         _URL = findViewById(R.id.editText);
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         _video.start();
     }
 
-    public void onClickButton(View v){
+    public void onClickButtonPlay(View v){
         Log.d("Teste","Funcionou");
 
         _timeBar.setProgress(_video.getCurrentPosition());
@@ -115,6 +119,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    public void onClickButtonBackward(View v){
+
+        int position;
+        if(_video.canSeekBackward()){
+            position = _video.getCurrentPosition() - 5000;
+
+            _timeBar.setProgress(position);
+            _video.seekTo(position);
+        }
+
+    }
+
+    public void onClickButtonForward(View v){
+
+        int position;
+        if(_video.canSeekBackward()){
+            position = _video.getCurrentPosition() + 5000;
+
+            _timeBar.setProgress(position);
+            _video.seekTo(position);
+        }
+
+    }
+
+
 
     /**
      * Esta função define um temporizador sempre igual para que se possa utuilizar na
