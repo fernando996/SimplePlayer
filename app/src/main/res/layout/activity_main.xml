@@ -136,6 +136,13 @@
 
         </LinearLayout>
 
+        <Switch
+            android:id="@+id/sensorSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickCheck"
+            android:text="Controlo Alternativo" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
