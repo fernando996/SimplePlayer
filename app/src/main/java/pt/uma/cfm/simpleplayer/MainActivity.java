@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -28,7 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
     private FloatingActionButton _bPlay, _bBack, _bFor;
     private VideoView _video;
@@ -38,10 +39,17 @@ public class MainActivity extends AppCompatActivity{
     private int _maxTime = 0;
     private Timer _timer;
     private TextView _title;
+    private Switch _sensorSwitch;
     private String defaultURL = "https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4";
     //private String defaultURL = "https://r6---sn-pouxjivoapox-cvhl.googlevideo.com/videoplayback?ms=au%2Crdu&fvip=6&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&mt=1525961085&mv=m&mime=video%2Fmp4&id=o-ADLGjRZK4KSHfAl4eTLpu-iMCtb2aIWE64eD6hqx0FRq&pl=24&gir=yes&key=yt6&ip=103.42.162.50&mn=sn-pouxjivoapox-cvhl%2Csn-cvh7knez&ipbits=0&mm=31%2C29&c=WEB&ratebypass=yes&lmt=1457644399034408&source=youtube&initcwndbps=688750&dur=58.374&clen=2624875&expire=1525982797&ei=7VH0WpnpLeWVz7sP_ISxgAM&itag=18&signature=641851770CA988F2164873F0253D98AAF45E6A0C.4CBD38B6C88ED879E0BDA0A03E3346A755AA5AC4&requiressl=yes&video_id=xqOFl93sHno&title=Batman+lesson+-+dont+give+the+Joker+a+glass+of+water";
     //private String defaultURL = "http://srv4.youtubemp3.to/download.php?output=MjM4MDU2NTcvMTUyNTk2MzM0NQ==";
 
+    //private String defaultURL = "https://img-9gag-fun.9cache.com/photo/agXODGv_460svvp9.webm";
+    //private String defaultURL = "https://img-9gag-fun.9cache.com/photo/aeMO8Zv_460svvp9.webm";
+
+    private SensorManager sensorManager;
+    Sensor accelerometer;
+    float xValue, yValue, zValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +60,55 @@ public class MainActivity extends AppCompatActivity{
         setConstants();
         setBarListener(_timeBar);
 
-        Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-        startActivity(intent);
 
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        //Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+        //startActivity(intent);
+
+        sensorManager.unregisterListener(MainActivity.this);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        xValue = sensorEvent.values[0];
+        yValue = sensorEvent.values[1];
+        zValue = sensorEvent.values[2];
+        Log.d("X", xValue + "");
+        Log.d("Y", yValue + "");
+        Log.d("Z", zValue + "");
+        //_video.pause();
+
+        if(yValue > 0 && xValue > 3 && zValue < 3 && zValue > -3){
+            Log.d("Action", "Rewind");
+            _video.pause();
+            _video.seekTo(_video.getCurrentPosition() - 2000);
+            //_video.start();
+        }
+        else if(yValue > 0 && xValue < -3 && zValue < 3 && zValue > -3){
+            Log.d("Action", "Advance");
+            _video.pause();
+            _video.seekTo(_video.getCurrentPosition() + 2000);
+            //_video.start();
+        }
+        else if(yValue > 0 && zValue < -3 && xValue < 3 && xValue > -3 && _video.isPlaying()){
+            Log.d("Action", "Pause");
+            _video.pause();
+            _bPlay.setImageResource(android.R.drawable.ic_media_play);
+        }
+        else if(yValue > 0 && zValue > 3 && xValue < 3 && xValue > -3 && !_video.isPlaying()){
+            Log.d("Action", "Play");
+            _video.start();
+            _bPlay.setImageResource(android.R.drawable.ic_media_pause);
+        }
+        //_video.start();
     }
 
 
@@ -99,6 +153,7 @@ public class MainActivity extends AppCompatActivity{
         _timeBar =  findViewById(R.id.timeBar);
         _URL = findViewById(R.id.editText);
         _title = findViewById(R.id.eventName);
+        _sensorSwitch = findViewById(R.id.sensorSwitch);
 
         _URL.setText(defaultURL);
         _video.setVideoPath(defaultURL);
@@ -163,6 +218,18 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+    public void onClickCheck(View v){
+
+        if (_sensorSwitch.isChecked())
+        {
+            sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        else
+        {
+            sensorManager.unregisterListener(MainActivity.this);
+        }
+
+    }
 
 
     /**
