@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main2Activity">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -18,12 +18,23 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
-        <VideoView
-            android:id="@+id/videoView2"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="24dp"
+            android:clickable="false"
+            android:visibility="gone" />
+
+        <SurfaceView
+            android:id="@+id/surfaceView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="8dp"
@@ -37,7 +48,7 @@
             app:layout_constraintVertical_bias="0.058" />
 
         <SeekBar
-            android:id="@+id/timeBar2"
+            android:id="@+id/timeBar"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:progress="0"
@@ -45,7 +56,7 @@
             android:thumbTint="@color/colorPrimary" />
 
         <TextView
-            android:id="@+id/eventName2"
+            android:id="@+id/eventName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0:00 / 1:23"
@@ -56,7 +67,7 @@
             tools:layout_editor_absoluteY="8dp" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -67,13 +78,79 @@
             tools:layout_editor_absoluteY="269dp" />
 
         <Button
-            android:id="@+id/setVideo2"
+            android:id="@+id/setVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="changeVideo"
             android:text="@string/set_video"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="362dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/buttonBackward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onClickButtonBackward"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@android:drawable/ic_media_rew"
+                android:focusable="true" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/buttonPlay"
+                android:layout_width="57dp"
+                android:layout_height="53dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClickButtonPlay"
+                app:backgroundTint="@color/colorPrimary"
+                app:elevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="0.418"
+                app:srcCompat="@android:drawable/ic_media_play" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/buttonForward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="onClickButtonForward"
+                app:backgroundTint="@color/colorPrimary"
+                app:elevation="0dp"
+                app:srcCompat="@android:drawable/ic_media_ff"
+                android:focusable="true" />
+
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/sensorSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickCheck"
+            android:text="Controlo Alternativo" />
 
     </LinearLayout>
 

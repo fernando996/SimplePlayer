@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
-        //Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+        startActivity(intent);
 
         sensorManager.unregisterListener(MainActivity.this);
     }
