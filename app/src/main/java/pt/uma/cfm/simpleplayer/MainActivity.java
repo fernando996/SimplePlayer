@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-        startActivity(intent);
+        //startActivity(intent);
 
         sensorManager.unregisterListener(MainActivity.this);
     }
@@ -86,27 +86,27 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.d("Z", zValue + "");
         //_video.pause();
 
-        if(yValue > 0 && xValue > 3 && zValue < 3 && zValue > -3){
+        if(yValue > 0 && xValue > 5 /*&& zValue < 3 && zValue > -3*/){
             Log.d("Action", "Rewind");
             _video.pause();
             _video.seekTo(_video.getCurrentPosition() - 2000);
             //_video.start();
         }
-        else if(yValue > 0 && xValue < -3 && zValue < 3 && zValue > -3){
+        else if(yValue > 0 && xValue < -5 /*&& zValue < 3 && zValue > -3*/){
             Log.d("Action", "Advance");
             _video.pause();
             _video.seekTo(_video.getCurrentPosition() + 2000);
             //_video.start();
         }
-        else if(yValue > 0 && zValue < -3 && xValue < 3 && xValue > -3 && _video.isPlaying()){
-            Log.d("Action", "Pause");
-            _video.pause();
-            _bPlay.setImageResource(android.R.drawable.ic_media_play);
-        }
-        else if(yValue > 0 && zValue > 3 && xValue < 3 && xValue > -3 && !_video.isPlaying()){
+        else if(yValue > 0 && zValue < -5 /*&& xValue < 3 && xValue > -3*/ && !_video.isPlaying()){
             Log.d("Action", "Play");
             _video.start();
             _bPlay.setImageResource(android.R.drawable.ic_media_pause);
+        }
+        else if(yValue > 0 && zValue > 5 /*&& xValue < 3 && xValue > -3 */&& _video.isPlaying()){
+            Log.d("Action", "Pause");
+            _video.pause();
+            _bPlay.setImageResource(android.R.drawable.ic_media_play);
         }
         //_video.start();
     }
