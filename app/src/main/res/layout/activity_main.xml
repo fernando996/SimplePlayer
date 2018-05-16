@@ -50,7 +50,7 @@
             android:id="@+id/eventName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0:00 / 1:23"
+            android:text="0:00 / 0:00"
             android:textAlignment="textEnd"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -140,8 +140,17 @@
             android:id="@+id/sensorSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="false"
+            android:drawableTint="@color/colorPrimary"
+            android:enabled="false"
+            android:foregroundTint="@color/colorPrimary"
             android:onClick="onClickCheck"
-            android:text="Controlo Alternativo" />
+            android:text="Controlo Alternativo"
+            android:textColorLink="@color/colorPrimary"
+            android:thumbTint="@color/colorPrimary"
+            android:trackTint="@color/colorPrimary" />
 
     </LinearLayout>
 

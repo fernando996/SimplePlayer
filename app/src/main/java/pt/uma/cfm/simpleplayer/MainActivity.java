@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.PowerManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -40,16 +41,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Timer _timer;
     private TextView _title;
     private Switch _sensorSwitch;
-    private String defaultURL = "https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4";
+    //private String defaultURL = "https://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4";
     //private String defaultURL = "https://r6---sn-pouxjivoapox-cvhl.googlevideo.com/videoplayback?ms=au%2Crdu&fvip=6&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&mt=1525961085&mv=m&mime=video%2Fmp4&id=o-ADLGjRZK4KSHfAl4eTLpu-iMCtb2aIWE64eD6hqx0FRq&pl=24&gir=yes&key=yt6&ip=103.42.162.50&mn=sn-pouxjivoapox-cvhl%2Csn-cvh7knez&ipbits=0&mm=31%2C29&c=WEB&ratebypass=yes&lmt=1457644399034408&source=youtube&initcwndbps=688750&dur=58.374&clen=2624875&expire=1525982797&ei=7VH0WpnpLeWVz7sP_ISxgAM&itag=18&signature=641851770CA988F2164873F0253D98AAF45E6A0C.4CBD38B6C88ED879E0BDA0A03E3346A755AA5AC4&requiressl=yes&video_id=xqOFl93sHno&title=Batman+lesson+-+dont+give+the+Joker+a+glass+of+water";
     //private String defaultURL = "http://srv4.youtubemp3.to/download.php?output=MjM4MDU2NTcvMTUyNTk2MzM0NQ==";
 
-    //private String defaultURL = "https://img-9gag-fun.9cache.com/photo/agXODGv_460svvp9.webm";
-    //private String defaultURL = "https://img-9gag-fun.9cache.com/photo/aeMO8Zv_460svvp9.webm";
+    private String defaultURL = "https://img-9gag-fun.9cache.com/photo/aeMO8Zv_460svvp9.webm";
 
     private SensorManager sensorManager;
     Sensor accelerometer;
     float xValue, yValue, zValue;
+
+    private int _saveProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +71,41 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //startActivity(intent);
 
         sensorManager.unregisterListener(MainActivity.this);
+        _video.setMediaController(null);
+        setFinishListener(_video);
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        // put your code here...
+        _video.pause();
+        _video.seekTo(_saveProgress);
+
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        // put your code here...
+        _saveProgress = _video.getCurrentPosition();
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+
+    private void setFinishListener(final VideoView video){
+        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                video.seekTo(0);
+            }
+        });
     }
 
     @Override
@@ -138,8 +170,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     Log.d("Buffer Atual",_video.getBufferPercentage()+"");
                     Log.d("Max",_video.getDuration()+"");
                 }
-
-
 
             }
         });
@@ -290,5 +320,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
     };
+
+
 
 }
