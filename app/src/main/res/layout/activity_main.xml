@@ -91,10 +91,10 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:focusable="true"
                 android:onClick="onClickButtonBackward"
                 app:backgroundTint="@color/colorPrimary"
-                app:srcCompat="@android:drawable/ic_media_rew"
-                android:focusable="true" />
+                app:srcCompat="@android:drawable/ic_media_rew" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/buttonPlay"
@@ -128,11 +128,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:focusable="true"
                 android:onClick="onClickButtonForward"
                 app:backgroundTint="@color/colorPrimary"
                 app:elevation="0dp"
-                app:srcCompat="@android:drawable/ic_media_ff"
-                android:focusable="true" />
+                app:srcCompat="@android:drawable/ic_media_ff" />
 
         </LinearLayout>
 
@@ -142,9 +142,8 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
             android:buttonTint="@color/colorPrimary"
-            android:checked="false"
             android:drawableTint="@color/colorPrimary"
-            android:enabled="false"
+            android:enabled="true"
             android:foregroundTint="@color/colorPrimary"
             android:onClick="onClickCheck"
             android:text="Controlo Alternativo"
