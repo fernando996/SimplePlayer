@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void setPlayList(){
         _playListPosition = 0;
         _playList = new ArrayList<>();
-        _playList.add(_defaultURL);
+        //_playList.add(_defaultURL);
         _playList.add("https://img-9gag-fun.9cache.com/photo/anM2ZQn_460svvp9.webm");
         _playList.add("https://img-9gag-fun.9cache.com/photo/aOrZEor_460svvp9.webm");
         _playList.add("https://img-9gag-fun.9cache.com/photo/aYgD6bq_460svvp9.webm");
@@ -191,11 +191,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void changeVideo(View v){
-        _video.setVideoPath(_URL.getText().toString());
+        /*_video.setVideoPath(_URL.getText().toString());
         _timeBar.setMax(_video.getDuration());
         _bPlay.setImageResource(android.R.drawable.ic_media_pause);
         DefineTimer();
-        _video.start();
+        _video.start();*/
+        _playList.add((_playListPosition + 1) % _playList.size(), _URL.getText().toString());
     }
 
     public void onClickButtonPlay(View v){
