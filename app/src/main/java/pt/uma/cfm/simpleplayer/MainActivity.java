@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         else if(yValue > 0 && zValue < -5 /*&& xValue < 3 && xValue > -3*/ && !_video.isPlaying()){
             Log.d("Action", "Play");
             _video.start();
+            DefineTimer();
             _bPlay.setImageResource(android.R.drawable.ic_media_pause);
         }
         else if(yValue > 0 && zValue > 5 /*&& xValue < 3 && xValue > -3 */&& _video.isPlaying()){
@@ -253,11 +254,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (_sensorSwitch.isChecked())
         {
             sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            _bPlay.setVisibility(View.GONE);
+            _bBack.setVisibility(View.GONE);
+            _bFor.setVisibility(View.GONE);
         }
         else
         {
             sensorManager.unregisterListener(MainActivity.this);
+            _bPlay.setVisibility(View.VISIBLE);
+            _bBack.setVisibility(View.VISIBLE);
+            _bFor.setVisibility(View.VISIBLE);
         }
+
 
     }
 
