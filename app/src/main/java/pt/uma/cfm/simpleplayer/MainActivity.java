@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
+import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -161,6 +163,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 // Set up the input
         final EditText input = new EditText(this);
+        //input.setBackgroundColor(R.color.colorPrimary);
+        //input.setLayerPaint();
+
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT /*| InputType.TYPE_TEXT_VARIATION_PASSWORD*/);
         input.setText(_defaultURL);
