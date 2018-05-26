@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onCompletion(MediaPlayer mediaPlayer) {
                 //video.seekTo(0);
                 _playListPosition++;
+
                 video.setVideoPath(_playList.get(_playListPosition % _playList.size()));
                 _bPlay.setImageResource(android.R.drawable.ic_media_play);
             }
@@ -179,7 +180,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Log.d("URL", input.getText().toString());
                 Log.d("Input", _title.getText().toString());*/
 
-                _playList.add((_playListPosition + 1) % _playList.size(), input.getText().toString());
+                _playList.add(input.getText().toString());
+                //_playListPosition++;
                 _bPlay.setImageResource(android.R.drawable.ic_media_pause);
                 _video.start();
                 DefineTimer();
