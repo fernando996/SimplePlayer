@@ -354,6 +354,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             _bPlay.setVisibility(View.GONE);
             _bBack.setVisibility(View.GONE);
             _bFor.setVisibility(View.GONE);
+            Context context = getApplicationContext();
+            CharSequence text = "Try moving the phone to control the video!";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
         else
         {
