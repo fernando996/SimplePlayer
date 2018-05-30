@@ -147,9 +147,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 //video.seekTo(0);
+                Log.d("Posição na lista antes da transição", _playListPosition+"");
                 _playListPosition++;
+                Log.d("Posição na lista após a transição", _playListPosition+"");
+                if(_playListPosition == _playList.size()){
+                    _playListPosition = 0;
+                }
 
-                video.setVideoPath(_playList.get(_playListPosition % _playList.size()));
+                video.setVideoPath(_playList.get(_playListPosition)/* % (_playList.size() - 1))*/);
                 _bPlay.setImageResource(android.R.drawable.ic_media_play);
             }
         });
@@ -182,7 +187,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Log.d("Input", _title.getText().toString());*/
 
                 _playList.add(input.getText().toString());
+                Log.d("Posição na lista após adicionar", _playListPosition+"");
                 //_playListPosition++;
+                //_playListPosition = _playListPosition.
+                //_video.setVideoPath(_playList);
                 _bPlay.setImageResource(android.R.drawable.ic_media_pause);
                 _video.start();
                 DefineTimer();
