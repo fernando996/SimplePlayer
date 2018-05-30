@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         _playList = new ArrayList<>();
         //_playList.add(_defaultURL);
         //_playList.add("https://img-9gag-fun.9cache.com/photo/anM2ZQn_460svvp9.webm");
-        _playList.add("https://img-9gag-fun.9cache.com/photo/a6oBgjb_460svvp9.webm");
+        _playList.add("https://img-9gag-fun.9cache.com/photo/am7xVLv_460svvp9.webm");
         _playList.add("https://img-9gag-fun.9cache.com/photo/aOrZEor_460svvp9.webm");
         _playList.add("https://img-9gag-fun.9cache.com/photo/a47Ag16_460svvp9.webm");
 
