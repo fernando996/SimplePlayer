@@ -135,9 +135,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         _playListPosition = 0;
         _playList = new ArrayList<>();
         //_playList.add(_defaultURL);
-        _playList.add("https://img-9gag-fun.9cache.com/photo/anM2ZQn_460svvp9.webm");
+        //_playList.add("https://img-9gag-fun.9cache.com/photo/anM2ZQn_460svvp9.webm");
+        _playList.add("https://img-9gag-fun.9cache.com/photo/a6oBgjb_460svvp9.webm");
         _playList.add("https://img-9gag-fun.9cache.com/photo/aOrZEor_460svvp9.webm");
-        _playList.add("https://img-9gag-fun.9cache.com/photo/aYgD6bq_460svvp9.webm");
+        _playList.add("https://img-9gag-fun.9cache.com/photo/a47Ag16_460svvp9.webm");
 
     }
 
@@ -221,13 +222,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.d("Z", zValue + "");
         //_video.pause();
 
-        if(yValue > 0 && xValue > 5 /*&& zValue < 3 && zValue > -3*/){
+        if(yValue > 0 && xValue > 5 && _video.canSeekBackward()/*&& zValue < 3 && zValue > -3*/){
             Log.d("Action", "Rewind");
             _video.pause();
             _video.seekTo(_video.getCurrentPosition() - 2000);
             //_video.start();
         }
-        else if(yValue > 0 && xValue < -5 /*&& zValue < 3 && zValue > -3*/){
+        else if(yValue > 0 && xValue < -5 && _video.canSeekForward()/*&& zValue < 3 && zValue > -3*/){
             Log.d("Action", "Advance");
             _video.pause();
             _video.seekTo(_video.getCurrentPosition() + 2000);
@@ -328,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onClickButtonForward(View v){
 
         int position;
-        if(_video.canSeekBackward()){
+        if(_video.canSeekForward()){
             position = _video.getCurrentPosition() + 5000;
 
             _timeBar.setProgress(position);
@@ -382,7 +383,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //We call the method that will work with the UI
         //through the runOnUiThread method.
         _maxTime = _video.getDuration();
-        _timeBar.setMax(_video.getDuration());
+        //_timeBar.setMax(_video.getDuration());
+        _timeBar.setMax(_maxTime);
 
         this.runOnUiThread(Timer_Tick);
     }
