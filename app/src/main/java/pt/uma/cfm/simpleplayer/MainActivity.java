@@ -1,8 +1,12 @@
 package pt.uma.cfm.simpleplayer;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
+import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,12 +15,19 @@ import android.media.MediaPlayer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 import android.widget.VideoView;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -27,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private FloatingActionButton _bPlay, _bBack, _bFor;
     private VideoView _video;
-    private EditText _URL;
+    //private EditText _URL;
     private SeekBar _timeBar;
     private int _maxTime = 0;
     private Timer _timer;
@@ -53,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar((android.support.v7.widget.Toolbar) toolbar);
+
+
+
         setPlayList();
         setConstants();
         setBarListener(_timeBar);
@@ -61,6 +77,29 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.unregisterListener(MainActivity.this);
         _video.setMediaController(null);
         setFinishListener(_video);
+    }
+
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mymenu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.mybutton) {
+            addVideo();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mymenu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -96,9 +135,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         _playListPosition = 0;
         _playList = new ArrayList<>();
         //_playList.add(_defaultURL);
-        _playList.add("https://img-9gag-fun.9cache.com/photo/anM2ZQn_460svvp9.webm");
+        //_playList.add("https://img-9gag-fun.9cache.com/photo/anM2ZQn_460svvp9.webm");
+        _playList.add("https://img-9gag-fun.9cache.com/photo/am7xVLv_460svvp9.webm");
         _playList.add("https://img-9gag-fun.9cache.com/photo/aOrZEor_460svvp9.webm");
-        _playList.add("https://img-9gag-fun.9cache.com/photo/aYgD6bq_460svvp9.webm");
+        _playList.add("https://img-9gag-fun.9cache.com/photo/a47Ag16_460svvp9.webm");
 
     }
 
@@ -107,11 +147,77 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 //video.seekTo(0);
+                Log.d("Posição na lista antes da transição", _playListPosition+"");
                 _playListPosition++;
-                video.setVideoPath(_playList.get(_playListPosition % _playList.size()));
+                Log.d("Posição na lista após a transição", _playListPosition+"");
+                if(_playListPosition == _playList.size()){
+                    _playListPosition = 0;
+                }
+
+                video.setVideoPath(_playList.get(_playListPosition)/* % (_playList.size() - 1))*/);
                 _bPlay.setImageResource(android.R.drawable.ic_media_play);
             }
         });
+    }
+
+    public void addVideo(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Insert the video's URL:");
+        if(_video.isPlaying()){
+            _video.pause();
+            _bPlay.setImageResource(android.R.drawable.ic_media_play);
+        }
+
+// Set up the input
+        final EditText input = new EditText(this);
+        //input.setBackgroundColor(R.color.colorPrimary);
+        //input.setLayerPaint();
+
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT /*| InputType.TYPE_TEXT_VARIATION_PASSWORD*/);
+        input.setText(_defaultURL);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                /*_title.setText(input.getText().toString());
+                Log.d("URL", input.getText().toString());
+                Log.d("Input", _title.getText().toString());*/
+
+                _playList.add(input.getText().toString());
+                Log.d("Posição na lista após adicionar", _playListPosition+"");
+                //_playListPosition++;
+                //_playListPosition = _playListPosition.
+                //_video.setVideoPath(_playList);
+                _bPlay.setImageResource(android.R.drawable.ic_media_pause);
+                _video.start();
+                DefineTimer();
+                Context context = getApplicationContext();
+                CharSequence text = "The video has been added to the list! Enjoy!";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, text, duration);
+                LinearLayout layout = (LinearLayout) toast.getView();
+                if (layout.getChildCount() > 0) {
+                    TextView tv = (TextView) layout.getChildAt(0);
+                    tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                }
+                toast.show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //_video.start();
+                _bPlay.setImageResource(android.R.drawable.ic_media_pause);
+                _video.start();
+                DefineTimer();
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     @Override
@@ -124,13 +230,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.d("Z", zValue + "");
         //_video.pause();
 
-        if(yValue > 0 && xValue > 5 /*&& zValue < 3 && zValue > -3*/){
+        if(yValue > 0 && xValue > 5 && _video.canSeekBackward()/*&& zValue < 3 && zValue > -3*/){
             Log.d("Action", "Rewind");
             _video.pause();
             _video.seekTo(_video.getCurrentPosition() - 2000);
             //_video.start();
         }
-        else if(yValue > 0 && xValue < -5 /*&& zValue < 3 && zValue > -3*/){
+        else if(yValue > 0 && xValue < -5 && _video.canSeekForward()/*&& zValue < 3 && zValue > -3*/){
             Log.d("Action", "Advance");
             _video.pause();
             _video.seekTo(_video.getCurrentPosition() + 2000);
@@ -182,22 +288,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         _bFor = findViewById(R.id.buttonForward);
         _video =  findViewById(R.id.videoView);
         _timeBar =  findViewById(R.id.timeBar);
-        _URL = findViewById(R.id.editText);
+        //_URL = findViewById(R.id.editText);
         _title = findViewById(R.id.eventName);
         _sensorSwitch = findViewById(R.id.sensorSwitch);
 
-        _URL.setText(_defaultURL);
+        //_URL.setText(_defaultURL);
         _timeBar.setMax(_video.getDuration());
         _video.setVideoPath(_playList.get(_playListPosition));
-    }
-
-    public void changeVideo(View v){
-        /*_video.setVideoPath(_URL.getText().toString());
-        _timeBar.setMax(_video.getDuration());
-        _bPlay.setImageResource(android.R.drawable.ic_media_pause);
-        DefineTimer();
-        _video.start();*/
-        _playList.add((_playListPosition + 1) % _playList.size(), _URL.getText().toString());
     }
 
     public void onClickButtonPlay(View v){
@@ -240,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onClickButtonForward(View v){
 
         int position;
-        if(_video.canSeekBackward()){
+        if(_video.canSeekForward()){
             position = _video.getCurrentPosition() + 5000;
 
             _timeBar.setProgress(position);
@@ -257,6 +354,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             _bPlay.setVisibility(View.GONE);
             _bBack.setVisibility(View.GONE);
             _bFor.setVisibility(View.GONE);
+            Context context = getApplicationContext();
+            CharSequence text = "Try moving the phone to control the video!";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
         else
         {
@@ -268,7 +370,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     }
-
 
     /**
      * Esta função define um temporizador sempre igual para que se possa utuilizar na
@@ -295,7 +396,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //We call the method that will work with the UI
         //through the runOnUiThread method.
         _maxTime = _video.getDuration();
-        _timeBar.setMax(_video.getDuration());
+        //_timeBar.setMax(_video.getDuration());
+        _timeBar.setMax(_maxTime);
 
         this.runOnUiThread(Timer_Tick);
     }
@@ -328,4 +430,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
     };
+
+
 }
